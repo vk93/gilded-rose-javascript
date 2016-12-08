@@ -1,4 +1,4 @@
-If you want to get cracking on the JavaScript source then do this:
+gitIf you want to get cracking on the JavaScript source then do this:
 
     git clone git@github.com:guyroyse/gilded-rose-javascript.git
 
