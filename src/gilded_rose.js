@@ -13,50 +13,45 @@ items.push(new Item('Sulfuras, Hand of Ragnaros', 0, 80));
 items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20));
 items.push(new Item('Conjured Mana Cake', 3, 6));
 
+
 function update_quality() {
   for (var i = 0; i < items.length; i++) {
-    if (items[i].name != 'Aged Brie' && items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-      if (items[i].quality > 0) {
-        if (items[i].name != 'Sulfuras, Hand of Ragnaros') {
-          items[i].quality = items[i].quality - 1
-        }
-      }
-    } else {
-      if (items[i].quality < 50) {
-        items[i].quality = items[i].quality + 1
-        if (items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-          if (items[i].sell_in < 11) {
-            if (items[i].quality < 50) {
-              items[i].quality = items[i].quality + 1
-            }
-          }
-          if (items[i].sell_in < 6) {
-            if (items[i].quality < 50) {
-              items[i].quality = items[i].quality + 1
-            }
-          }
-        }
-      }
+
+    if(typeof items[i].update_quality === 'function') {
+
+      items[i].update_quality()
     }
-    if (items[i].name != 'Sulfuras, Hand of Ragnaros') {
-      items[i].sell_in = items[i].sell_in - 1;
-    }
-    if (items[i].sell_in < 0) {
-      if (items[i].name != 'Aged Brie') {
-        if (items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-          if (items[i].quality > 0) {
-            if (items[i].name != 'Sulfuras, Hand of Ragnaros') {
-              items[i].quality = items[i].quality - 1
-            }
-          }
-        } else {
-          items[i].quality = items[i].quality - items[i].quality
+    else {
+      switch (items[i].name)
+      {
+        case 'Aged Brie':
+        {
+          items[i] = new SpecialCheese(items[i].name,items[i].sell_in,items[i].quality)
+          break
         }
-      } else {
-        if (items[i].quality < 50) {
-          items[i].quality = items[i].quality + 1
+        case 'Sulfuras, Hand of Ragnaros':
+        {
+          items[i] = new Legendary(items[i].name,items[i].sell_in,items[i].quality)
+          break
+        }
+        case 'Backstage passes to a TAFKAL80ETC concert':
+        {
+          items[i] = new Backstage(items[i].name,items[i].sell_in,items[i].quality)
+          break
+        }
+        case 'Conjured Mana Cake':
+        {
+          items[i] = new ConjuredItem(items[i].name,items[i].sell_in,items[i].quality)
+          break
+        }
+        default:
+        {
+          items[i] = new NormalItem(items[i].name,items[i].sell_in,items[i].quality)
+          break
         }
       }
+      items[i].update_quality()
+
     }
   }
 }
